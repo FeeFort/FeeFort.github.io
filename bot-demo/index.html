@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>pa1ka Twitch Bot Demo</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(168,85,247,.16), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(236,72,153,.10), transparent 35%),
+    #09090b;
+  color:white;
+  overflow-x:hidden;
+}
+
+.container{
+  width:100%;
+  max-width:1320px;
+  margin:auto;
+  padding:60px 24px 120px;
+}
+
+section{
+  margin-bottom:140px;
+}
+
+h1{
+  font-size:clamp(58px,8vw,100px);
+  line-height:.94;
+  font-weight:900;
+  letter-spacing:-4px;
+  margin-bottom:28px;
+}
+
+h2{
+  font-size:48px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-2px;
+  margin-bottom:18px;
+  text-align:center;
+}
+
+.gradient{
+  background:linear-gradient(90deg,#c084fc,#f472b6);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.description{
+  color:#a1a1aa;
+  line-height:1.9;
+  font-size:18px;
+  max-width:860px;
+
+  margin:0 auto 24px; /* ВАЖНО: центрирует блок */
+  text-align:center;  /* центрирует текст внутри */
+}
+
+.center{
+  text-align:center;
+}
+
+.notice{
+  background:rgba(168,85,247,.08);
+  border:1px solid rgba(168,85,247,.18);
+  border-radius:22px;
+  padding:18px 22px;
+  color:#d4d4d8;
+  line-height:1.8;
+}
+
+.hero{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:70px;
+  min-height:100vh;
+  justify-content:center;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Горизонтальное центрирование дочерних элементов */
+  text-align: center; /* Явное указание выравнивания текста */
+  max-width: 980px;
+  margin: 0 auto; /* Дополнительная гарантия центрирования */
+}
+
+.hero-buttons{
+  display:flex;
+  flex-wrap: nowrap;
+  justify-content:center;
+  gap:16px;
+  margin-top:38px;
+}
+
+.hero-btn{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 22px;
+  border-radius:18px;
+  text-decoration:none;
+  font-weight:700;
+  font-size:15px;
+  transition:.2s ease;
+}
+
+.hero-btn img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+}
+
+.hero-btn.primary{
+  background:linear-gradient(135deg,#9333ea,#ec4899);
+  color:white;
+  box-shadow:0 15px 35px rgba(168,85,247,.25);
+}
+
+.hero-btn.secondary{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  color:white;
+}
+
+.hero-btn:hover{
+  transform:translateY(-2px);
+}
+
+.features-grid{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+  margin-top:40px;
+}
+
+.whois-grid{
+  margin-top:50px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:24px;
+}
+
+.card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:24px;
+  padding:28px;
+  transition:.25s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(192,132,252,.25);
+}
+
+.icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: rgba(168, 85, 247, .12);
+  display: flex;
+  align-items: center; /* Вертикальное центрирование */
+  justify-content: center; /* Горизонтальное центрирование */
+  font-size: 26px;
+  margin-bottom: 18px;
+  margin-left: auto; /* Дополнительно: выравнивание блока по центру */
+  margin-right: auto;
+}
+
+.card h3{
+  font-size:21px;
+  margin-bottom:12px;
+}
+
+.card p{
+  color:#a1a1aa;
+  line-height:1.8;
+  font-size:15px;
+}
+
+.chat-window{
+  background:#18181b;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.45);
+  margin-top:40px;
+}
+
+.chat-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:18px 22px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.circle{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#3f3f46;
+}
+
+.chat-title{
+  margin-left:6px;
+  color:#d4d4d8;
+  font-weight:700;
+  font-size:14px;
+}
+
+.chat-body{
+  padding:22px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.message{
+  opacity:0;
+  transform:translateY(12px);
+  animation:fade .45s forwards;
+}
+
+.message:nth-child(1){ animation-delay:1s; }
+.message:nth-child(2){ animation-delay:2.5s; }
+.message:nth-child(3){ animation-delay:4s; }
+.message:nth-child(4){ animation-delay:5.5s; }
+.message:nth-child(5){ animation-delay:7s; }
+.message:nth-child(6){ animation-delay:8.5s; }
+
+@keyframes fade{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.username{
+  font-weight:800;
+  margin-right:8px;
+}
+
+.viewer1{ color:#60a5fa; }
+.viewer2{ color:#f472b6; }
+.viewer3{ color:#34d399; }
+.viewer4{ color:#facc15; }
+.bot{ color:#c084fc; }
+
+.text{
+  color:#f4f4f5;
+  line-height:1.8;
+  font-size:15px;
+}
+
+.try-box{
+  margin-top:40px;
+  background:#18181b;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:28px;
+  overflow:hidden;
+}
+
+.try-header{
+  padding:18px 22px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  color:#d4d4d8;
+  font-weight:700;
+}
+
+.try-chat{
+  min-height:280px;
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.input-wrapper{
+  display:flex;
+  gap:14px;
+  padding:20px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+.input{
+  flex:1;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:16px;
+  color:white;
+  outline:none;
+}
+
+.send{
+  background:linear-gradient(135deg,#9333ea,#ec4899);
+  border:none;
+  color:white;
+  padding:0 24px;
+  border-radius:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.footer{
+  padding-top:40px;
+  border-top:1px solid rgba(255,255,255,.06);
+  color:#71717a;
+  font-size:14px;
+  text-align:center;
+}
+
+.footer a{
+  color:#c084fc;
+  text-decoration:none;
+}
+
+code{
+  display:block;
+  margin-top:12px;
+  color:#d8b4fe;
+  word-break:break-all;
+  font-size:14px;
+}
+
+@media(max-width:980px){
+
+  .whois-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:760px){
+
+  .container{
+    padding:36px 18px 90px;
+  }
+
+  h1{
+    font-size:58px;
+  }
+
+  h2{
+    font-size:38px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <h1>
+        Interactive<br>
+        <span class="gradient">Twitch Bot</span>
+      </h1>
+
+      <p class="description center">
+        We developed a Twitch bot for pa1ka’s channel, a VALORANT Partner channel,
+        to improve viewer engagement through AI-powered interactions
+        and entertainment systems.
+      </p>
+
+      <p class="description center">
+        The bot already supports commands such as
+        <b>!ask</b>, <b>!balance</b>, <b>!casino</b>,
+        <b>!roulette</b>, <b>!color</b>, and <b>!duel</b>.
+      </p>
+
+      <div class="notice">
+        Casino, roulette, betting, and economy features are purely for entertainment purposes.
+        The bot currency comes from Twitch channel points and exists only as an internal channel balance.
+        It has no real-world value, monetization, withdrawal, exchange, or purchase functionality.
+      </div>
+
+      <div class="hero-buttons">
+
+        <a
+          href="https://github.com/FeeFort/AI-Chat-Bot-Twitch"
+          target="_blank"
+          class="hero-btn primary"
+        >
+          <img src="src/images/github.png" alt="">
+          Bot Repository
+        </a>
+
+        <a
+          href="https://feefort.github.io/bot_commands/en"
+          target="_blank"
+          class="hero-btn secondary"
+        >
+          <img src="src/images/commands.png" alt="">
+          Full Command List
+        </a>
+
+        <a
+          href="https://github.com/FeeFort/AI-Chat-Bot-Twitch/blob/main/cogs/whois.py"
+          target="_blank"
+          class="hero-btn secondary"
+        >
+          <img src="src/images/code.png" alt="">
+          whois.py Source
+        </a>
+
+        <a
+          href="https://twitch.tv/pa1ka"
+          target="_blank"
+          class="hero-btn secondary"
+        >
+          <img src="src/images/twitch.png" alt="">
+          pa1ka Twitch Channel
+        </a>
+
+        <a
+          href="#tryityourself"
+          class="hero-btn secondary"
+        >
+          <img src="src/images/tryit.png" alt="">
+          Try It Yourself
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- FEATURES -->
+
+    <div class="features-grid">
+
+      <div class="card">
+        <div class="icon">🤖</div>
+
+        <h3>AI Q&A</h3>
+
+        <p>
+          Interactive AI-powered responses through the !ask command.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🎰</div>
+
+        <h3>Entertainment Economy</h3>
+
+        <p>
+          Casino, roulette, duel, betting, and internal channel balance systems.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">📊</div>
+
+        <h3>Riot Games API</h3>
+
+        <p>
+          Leaderboard lookups, match history analysis, and advanced player statistics.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">⚡</div>
+
+        <h3>Live Chat Interaction</h3>
+
+        <p>
+          Designed specifically for fast Twitch chat engagement and entertainment.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- COMMAND DEMO -->
+
+  <section>
+
+    <h2>
+      Command <span class="gradient">Demonstration</span>
+    </h2>
+
+    <p class="description center">
+      Simulated Twitch chat demonstrating entertainment commands and AI interaction.
+    </p>
+
+    <div class="chat-window">
+
+      <div class="chat-header">
+
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+
+        <div class="chat-title">
+          twitch.tv/pa1ka
+        </div>
+
+      </div>
+
+      <div class="chat-body">
+
+        <div class="message">
+          <span class="username viewer1">peekmaster:</span>
+          <span class="text">!balance</span>
+        </div>
+
+        <div class="message">
+          <span class="username bot">pa1kamod:</span>
+          <span class="text">@peekmaster your balance is 18,420 coins.</span>
+        </div>
+
+        <div class="message">
+          <span class="username viewer2">radiant777:</span>
+          <span class="text">!casino 5000</span>
+        </div>
+
+        <div class="message">
+          <span class="username bot">pa1kamod:</span>
+          <span class="text">🎰 JACKPOT! @radiant777 won 12,500 coins.</span>
+        </div>
+
+        <div class="message">
+          <span class="username viewer3">smokesonly:</span>
+          <span class="text">!ask best sentinel in valorant?</span>
+        </div>
+
+        <div class="message">
+          <span class="username bot">pa1kamod:</span>
+          <span class="text">
+            AI Response: Cypher remains one of the strongest sentinels
+            due to information control and post-plant utility.
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- WHOIS INFO -->
+
+  <section>
+
+    <h2>
+      The <span class="gradient">!whois</span> Command
+    </h2>
+
+    <p class="description center">
+      The !whois command was developed to make high-level VALORANT leaderboard
+      statistics more accessible and entertaining for Twitch chat.
+    </p>
+
+    <p class="description center">
+      Viewers can enter a leaderboard position and retrieve statistics
+      from the previous VALORANT Act,
+      including recent results, K/D ratio, and headshot percentage.
+    </p>
+
+    <div class="notice">
+      The Riot API integration for this feature is implemented in
+      <b>cogs/whois.py</b>.
+      Some TODO comments remain because development API access
+      does not fully expose all production response scenarios yet,
+      making certain edge cases impossible to completely verify at this stage.
+    </div>
+
+    <div class="whois-grid">
+
+      <div class="card">
+        <div class="icon">🏆</div>
+
+        <h3>Leaderboard Lookup</h3>
+
+        <p>
+          Retrieves a player from the previous VALORANT Act leaderboard
+          using leaderboard position.
+        </p>
+
+        <code>
+          /val/ranked/v1/leaderboards/by-act/{actId}
+        </code>
+      </div>
+
+      <div class="card">
+        <div class="icon">📦</div>
+
+        <h3>Act Detection</h3>
+
+        <p>
+          Detects the currently active Act
+          and automatically identifies the previous one.
+        </p>
+
+        <code>
+          /val/content/v1/contents
+        </code>
+      </div>
+
+      <div class="card">
+        <div class="icon">📜</div>
+
+        <h3>Recent Match History</h3>
+
+        <p>
+          Loads recent matches for the selected player
+          using their Riot PUUID.
+        </p>
+
+        <code>
+          /val/match/v1/matchlists/by-puuid/{puuid}
+        </code>
+      </div>
+
+      <div class="card">
+        <div class="icon">📊</div>
+
+        <h3>Detailed Match Statistics</h3>
+
+        <p>
+          Calculates K/D ratio, headshot percentage,
+          and recent results from detailed match data.
+        </p>
+
+        <code>
+          /val/match/v1/matches/{matchId}
+        </code>
+      </div>
+
+      <div class="card">
+        <div class="icon">⚠️</div>
+
+        <h3>TODO Verification</h3>
+
+        <p>
+          Remaining TODO items include verification of
+          production response formats,
+          match history ordering,
+          and draw handling behavior.
+        </p>
+
+      </div>
+
+      <div class="card">
+        <div class="icon">🔒</div>
+
+        <h3>Error Handling</h3>
+
+        <p>
+          Handles invalid leaderboard positions,
+          hidden player profiles,
+          empty histories,
+          and unavailable players.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- WHOIS DEMO -->
+
+  <section>
+
+    <h2>
+      Whois <span class="gradient">Demo</span>
+    </h2>
+
+    <p class="description center">
+      Simulated Twitch chat demonstrating successful lookups and possible edge cases.
+    </p>
+
+    <div class="chat-window">
+
+      <div class="chat-header">
+
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+
+        <div class="chat-title">
+          twitch.tv/pa1ka
+        </div>
+
+      </div>
+
+      <div class="chat-body">
+
+        <div class="message">
+          <span class="username viewer1">aimdiff:</span>
+          <span class="text">!whois 27</span>
+        </div>
+
+        <div class="message">
+          <span class="username bot">pa1kamod:</span>
+          <span class="text">
+            #27 (Previous Act): Demon1#NA1 |
+            Last 5: W W L W W |
+            K/D: 1.43 |
+            HS: 31.74%
+          </span>
+        </div>
+
+        <div class="message">
+          <span class="username viewer2">rankgrinder:</span>
+          <span class="text">!whois abc</span>
+        </div>
+
+        <div class="message">
+          <span class="username bot">pa1kamod:</span>
+          <span class="text">
+            Leaderboard position must be a positive integer.
+          </span>
+        </div>
+
+        <div class="message">
+          <span class="username viewer3">peekmaster:</span>
+          <span class="text">!whois 999999</span>
+        </div>
+
+        <div class="message">
+          <span class="username bot">pa1kamod:</span>
+          <span class="text">
+            Player with this leaderboard position was not found.
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- TRY IT YOURSELF -->
+
+  <section id="tryityourself">
+
+    <h2>
+      Try It <span class="gradient">Yourself</span>
+    </h2>
+
+    <p class="description center">
+      Twitch chat for testing example commands.
+    </p>
+
+    <center>
+    <iframe id="twitch-chat-embed"
+        src="https://www.twitch.tv/embed/pa1ka/chat?parent=dev.twitch.tv"
+        height="500"
+        width="350">
+    </iframe>
+    </center>
+  </section>
+
+  <footer class="footer">
+    Demo project for Twitch & VALORANT community engagement •
+    Full command list:
+    <a href="https://feefort.github.io/bot_commands/en" target="_blank">
+      feefort.github.io/bot_commands/en
+    </a>
+  </footer>
+
+</div>
+
+<script>
+
+function sendMessage(){
+
+  const input = document.getElementById("input");
+  const chat = document.getElementById("chat");
+
+  const value = input.value.trim();
+
+  if(!value) return;
+
+  const user = document.createElement("div");
+
+  user.innerHTML = `
+    <span class="username viewer2">you:</span>
+    <span class="text">${value}</span>
+  `;
+
+  chat.appendChild(user);
+
+  const bot = document.createElement("div");
+
+  let response = "Unknown command.";
+
+  if(value.startsWith("!balance")){
+    response = "@you your balance is 15,240 coins.";
+  }
+
+  else if(value.startsWith("!casino")){
+    response = "🎰 JACKPOT! @you won 9,500 coins.";
+  }
+
+  else if(value.startsWith("!ask")){
+    response =
+      "AI Response: Jett remains one of the strongest duelists in ranked.";
+  }
+
+  else if(value.startsWith("!whois")){
+
+    const parts = value.split(" ");
+
+    if(parts.length < 2){
+      response = "Usage: !whois [leaderboard position]";
+    }
+
+    else if(isNaN(parts[1]) || Number(parts[1]) <= 0){
+      response = "Leaderboard position must be a positive integer.";
+    }
+
+    else{
+      response =
+        "#"+parts[1]+" (Previous Act): yay#100T | Last 5: W W L W W | K/D: 1.39 | HS: 29.81%";
+    }
+
+  }
+
+  bot.innerHTML = `
+    <span class="username bot">pa1kamod:</span>
+    <span class="text">${response}</span>
+  `;
+
+  setTimeout(()=>{
+    chat.appendChild(bot);
+    chat.scrollTop = chat.scrollHeight;
+  },700);
+
+  input.value = "";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -130,14 +130,14 @@ Color roulette. You must guess the color.
 
 ### Available colors
 
-| Color (EN) | Color (RU) | Emoji | Probability | Multiplier |
+| Input (command) | Display (output) | Emoji | Probability | Multiplier |
 |---|---|---|---:|---:|
-| white | Белый | ⚪ | 11.1% | x1.5 |
-| black | Чёрный | ⚫ | 11.1% | x1.5 |
-| red | Красный | 🔴 | 11.1% | x1.5 |
-| blue | Синий | 🔵 | 11.1% | x1.5 |
-| orange | Оранжевый | 🟠 | 11.1% | x1.5 |
-| yellow | Жёлтый | 🟡 | 11.1% | x1.5 |
-| green | Зелёный | 🟢 | 11.1% | x1.5 |
-| purple | Фиолетовый | 🟣 | 11.1% | x1.5 |
-| brown | Коричневый | 🟤 | 11.1% | x1.5 |
+| white | White | ⚪ | 11.1% | x1.5 |
+| black | Black | ⚫ | 11.1% | x1.5 |
+| red | Red | 🔴 | 11.1% | x1.5 |
+| blue | Blue | 🔵 | 11.1% | x1.5 |
+| orange | Orange | 🟠 | 11.1% | x1.5 |
+| yellow | Yellow | 🟡 | 11.1% | x1.5 |
+| green | Green | 🟢 | 11.1% | x1.5 |
+| purple | Purple | 🟣 | 11.1% | x1.5 |
+| brown | Brown | 🟤 | 11.1% | x1.5 |

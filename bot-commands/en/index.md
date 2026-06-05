@@ -52,6 +52,40 @@ Allows you to transfer coins to another chat participant.
 
 ---
 
+## !blackjack
+
+### Usage
+
+```
+!blackjack [bet]
+```
+
+Blackjack against the bot.
+
+- Minimum bet: **100**
+- Deck: `6, 7, 8, 9, 10, J, Q, K, A`
+- `A` always counts as **11**
+- `10`, `J`, `Q`, `K` count as **10**
+- A regular two-card `21` is effectively the same as blackjack in this implementation
+- Payouts:
+  - dealer bust or normal higher-sum win returns **x2**
+  - player blackjack returns **x5**
+  - a push returns the stake
+
+### Odds table
+
+| Outcome | Chance | Notes |
+|---|---:|---|
+| Win with blackjack | 8.78% | `A + 10/J/Q/K` for the player, no dealer blackjack |
+| Win by higher total | 33.10% | The player's total is higher than the dealer's |
+| Win because the dealer busts | 1.22% | Dealer goes above 21, player is 21 or less |
+| Push / stake returned | 13.79% | All ties, including both blackjack and both bust |
+| Total win chance | 43.10% | All winning outcomes combined |
+
+The code also has a separate `sum == 21` check, but with this deck it does not create a separate scenario, because any two-card `21` here is always blackjack.
+
+---
+
 ## !casino
 
 ### Usage
